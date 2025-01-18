@@ -38,4 +38,5 @@ jobs:
       # Step 5: Lint all CSS files using Stylelint
     - name: Lint CSS files
       run: |
-        npx stylelint 'styles**/*.css'
+        npx stylelint 'styles/**/*.css'  # Added missing '/' in file path
+      working-directory: ${{ github.workspace }}  # Corrected location of working-directory
