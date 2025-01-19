@@ -1,0 +1,42 @@
+name: Linting Pipeline
+
+# Trigger the workflow on push or pull request events to the 'develop' branch
+on:
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  lint:
+    # The job will run on an Ubuntu runner
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code from the repository
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+      # Step 2: Set up Node.js (for installing npm dependencies)
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'  # You can update the version if necessary
+
+      # Step 3: Install HTMLHint and Stylelint
+    - name: Install dependencies
+      run: |
+        npm install htmlhint stylelint --save-dev
+
+      # Step 4: Lint all HTML files using HTMLHint
+    - name: Lint HTML files
+      run: |
+        npx htmlhint '**/*.html'
+
+      # Step 5: Lint all CSS files using Stylelint
+    - name: Lint CSS files
+      run: |
+        npx stylelint 'styles/**/*.css'  # Added missing '/' in file path
+      working-directory: ${{ github.workspace }}  # Corrected location of working-directory
